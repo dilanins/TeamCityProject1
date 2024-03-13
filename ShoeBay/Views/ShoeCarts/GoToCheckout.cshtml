@@ -1,0 +1,74 @@
+﻿@model IEnumerable<ShoeBay.Models.ShoeCart>
+
+@{
+    ViewData["Title"] = "GoToCheckout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Items In Cart</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="display:none"></th>
+            <th>
+               Image
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Shoes.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td style="display:none">
+                    @Html.DisplayFor(modelItem => item.Shoes.Id)
+                </td>
+                <td>
+                    <img src="~/Images/@item.Shoes.FileUrl" style="width:75px;height:75px;" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Shoes.Description)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div>
+    <input type="submit" value="Check Out" onclick="ConfirmOrder()" class="btn btn-primary" /> |
+    <a asp-action="Index">Back to List</a>
+   @* <a asp-action="CheckOut" asp-asp-controller="ShoeCarts">Check Out</a>*@
+</div>
+
+@section Scripts {
+    <script>
+
+        function ConfirmOrder() {
+
+            $.ajax({
+                url: "@Url.Action("CheckOut", "ShoeCarts")",
+                type: "POST",
+               
+            });
+        }
+
+    </script>
+
+}

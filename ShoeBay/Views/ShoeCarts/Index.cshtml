@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ShoeBay.Models.Shoe>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 col-xs-6 boarder-primary mb-3">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-secondary">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Description
+                                    <a class="text-white float-right"><i class="bi bi-penci-square"></i></a>
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="~/Images/@item.FileUrl" style='width: 100px; height: 100px;' width="100%" id="ImageUrl" alt="">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text" id="Desc">@item.Description</p>
+                            <p class="card-text" id="Desc">@item.Brand</p>
+                            <p class="card-text">@item.Cost</p>
+                            <p class="card-text">@item.Color</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer">
+                            <p class="card-text">abc</p>
+
+                            <input type="button" class="btn btn-sm btn-info" value="Add to Cart" id="AddCart" onclick="AddtoCart('@item.Id')" />
+                            <a asp-action="GoToCheckout" asp-controller="ShoeCarts">View Cart Items</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    <script>
+
+        function AddtoCart(id) {
+           
+            $.ajax({
+                url: "@Url.Action("SaveCartItems", "ShoeCarts")",
+                type: "POST",
+                data: { id: id }
+            });
+        }
+     
+        </script>
+}

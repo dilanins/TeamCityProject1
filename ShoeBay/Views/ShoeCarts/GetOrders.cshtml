@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ShoeBay.Models.ShoeCart>
+
+@{
+    ViewData["Title"] = "GetOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="display:none"></th>
+            <th>Image</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Shoes.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td style="display:none">
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                    <img src="~/Images/@item.Shoes.FileUrl" style="width:75px;height:75px;" />
+            </td>
+                
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Shoes.Description)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+
+            <td>
+                    <a asp-action="ProcessOrder" asp-controller="ShoeCarts" asp-route-id="@item.Id">Process</a> |
+                  @*  <a asp-action="DeleteOrder" asp-route-id="@item.Id">Decline</a>*@
+                    <input type="submit" value="Check Out" onclick="DeleteOrder('@item.Id')" class="btn btn-primary" />
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+
+        function DeleteOrder() {
+
+            $.ajax({
+                url: "@Url.Action("CheckOut", "ShoeCarts")",
+                type: "POST",
+
+            });
+        }
+
+    </script>
+
+}
